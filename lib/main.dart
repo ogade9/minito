@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'pages/sign_in.dart';
-import 'pages/login.dart';
 
-void main() {
-  runApp(const RobotOpsApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 }
 
-class RobotOpsApp extends StatelessWidget {
-  const RobotOpsApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Robot OPS',
-      debugShowCheckedModeBanner: false,
-      home: const Login(),
+      title: 'Mini Robo',
+      home: const SignIn(), 
     );
   }
+  
 }

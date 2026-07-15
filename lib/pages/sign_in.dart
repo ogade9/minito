@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class SignIn extends StatefulWidget{
   const SignIn({super.key});
 
@@ -13,14 +15,26 @@ class _SignInState extends State<SignIn>{
   bool _isLoading = false;
   String? _errorMessage;
 
-  Future<void> signin() async {
+  Future<void> _signin() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
-
+      try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
-
   @override
   Widget build(BuildContext context) {
     //Scaffold is like the body or the basic frame of the page
@@ -49,7 +63,7 @@ class _SignInState extends State<SignIn>{
 
             ),
             const SizedBox(height: 24),
-            ElevatedButton(onPressed: (), child: const Text('Sign In'),
+            ElevatedButton(onPressed:_signin, child: const Text('Sign In'),
             )
           ]
 
