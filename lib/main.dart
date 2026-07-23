@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'pages/sign_in.dart';
+import 'pages/login.dart';
+import 'pages/connection.dart';
+import 'signaling_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +21,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mini Robo',
-      home: const SignIn(), 
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Connections(),
+        '/signin':(context) => SignIn(),
+        '/login':(context) => Login(),
+        '/connection':(context) => Connection(),
+      },
     );
   }
   

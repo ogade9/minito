@@ -13,14 +13,13 @@ const userSchema = new mongoose.Schema({
     userId: String,
     fullName: String,
     email: String,
-    userName: String,
 
 })
 require('dotenv').config();
 const mongoURI = process.env.MONGO_URI
 const port = process.env.PORT || 5000
 const userConnection = mongoose.createConnection(mongoURI)
-const user = mongoose.model('User', userSchema)
+const user = userConnection.model('User', userSchema)
 userConnection.on('connected', () =>{
     console.log("User Database Connected!!!")
 })
@@ -83,25 +82,28 @@ app.get("/api/user/signin", cors(), async(req,res) => {
 })
 app.post("/api/robot-users", cors(), async(req,res) => {
    try{
-    const newUser = user(req.body)
+    const newUser = new user(req.body)
     console.log("before save")
     await newUser.save()
     console.log("After save")
     console.log(newUser)
     res.status(201).send("Added another user succesfully")
    }catch(error){
+    console.error(error) 
+
     res.status(400).send(error.message);
    }
 
     
 })
-app.post("/api/user/signin", cors(), async(req,res) => {
+app.post("/api/robot-users/signin", cors(), async(req,res) => {
    try{
-    const newUser = user(req.body)
+    const newUser = new user(req.body)
     await newUser.save()
     console.log(newUser)
     res.status(201).send("Added user sign in details succesfully")
    }catch(error){
+        console.error(error) 
     res.status(400).send(error.message);
    }
 
